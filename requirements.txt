@@ -3,3 +3,4 @@ requests
 beautifulsoup4
 readability-lxml
 flask-cors
+lxml_html_clean
