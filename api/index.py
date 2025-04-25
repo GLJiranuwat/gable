@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import requests
 from bs4 import BeautifulSoup
@@ -44,7 +44,11 @@ def extract():
 
     try:
         content = extract_clean_content(url)
-        return jsonify({'content': content})
+        # This is the important part: ensure_ascii=False keeps Thai characters readable
+        return Response(
+            json.dumps({'content': content}, ensure_ascii=False),
+            content_type='application/json; charset=utf-8'
+        )
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
