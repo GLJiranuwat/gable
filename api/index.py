@@ -3,6 +3,7 @@ from flask_cors import CORS
 import requests
 from bs4 import BeautifulSoup
 from readability import Document
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -27,7 +28,8 @@ def extract():
     try:
         print("Headers:", request.headers)
         print("Raw Data:", request.data)
-        data = request.get_json()
+        raw_data = request.data.decode('utf-8').replace('\xa0', ' ')
+        data = json.loads(raw_data)
         print("Parsed JSON:", data)
     except Exception as e:
         return jsonify({'error': f'Invalid JSON format: {str(e)}'}), 400
