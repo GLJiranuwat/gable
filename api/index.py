@@ -24,8 +24,15 @@ def extract_clean_content(url):
 
 @app.route('/extract', methods=['POST'])
 def extract():
-    data = request.get_json()
-    query = data.get('text')
+    try:
+        print("Headers:", request.headers)
+        print("Raw Data:", request.data)
+        data = request.get_json()
+        print("Parsed JSON:", data)
+    except Exception as e:
+        return jsonify({'error': f'Invalid JSON format: {str(e)}'}), 400
+
+    query = data.get('text') if data else None
     if not query:
         return jsonify({'error': 'Missing text field'}), 400
 
